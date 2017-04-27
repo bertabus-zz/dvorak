@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+In String: <textarea type="text" ng-model="firstName"></textarea>
+<br>
+<button ng-click="clickButton()">Convert</button>
+<br>
+Dvorak : <textarea>{{NewString}}</textarea>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+    //$scope.firstName = "";
+	$http.get('js/map.json')
+	.success(function(data) {
+        	dvMap = data;
+	})
+	.error(function(data){
+		dvMap = {}
+	});
+    $scope.clickButton = function() {
+    $scope.NewString = "";
+            for (var i = 0, len = $scope.firstName.length; i < len; i++) {
+  		if( $scope.firstName[i] in dvMap ) {
+            $scope.NewString += dvMap[$scope.firstName[i]];
+		} else {
+        	$scope.NewString += $scope.firstName[i];
+        }
+		};//end For loop
+	  
+  	}
+     
+
+});
+</script>
+
+</body>
+</html>
